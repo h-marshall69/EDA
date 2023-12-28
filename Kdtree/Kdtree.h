@@ -1,6 +1,18 @@
 #ifndef KDTREE_H_
 #define KDTREE_H_
 #include <vector>
+
+bool operator==(const std::vector<int>& left, const std::vector<int>& right) {
+    if(left.size() != right.size())
+        return false;
+
+    for(int i = 0; i < left.size(); i++) {
+        if(left[i] != right[i])
+            return false;
+    }
+    return true;
+}
+
 class Knode {
 public:
     std::vector<int> dim;
@@ -43,11 +55,34 @@ private:
             }
         }
     }
+    Knode *buscar(Knode *, std::vector<int> dim);
 public:
     Knode *root;
     Kdtree() {
         root = NULL;
     }
     void insertar(std::vector<int> dim) {insertar(root, dim, 0);}
+    Knode *buscar(std::vector<int> dim) {buscar(root, dim);}
+    void prueba(std::vector<int> dim) {
+        Knode *tm = buscar(dim);
+        std::cout << buscar(dim)->nivel;
+    }
 };
+
+Knode* Kdtree::buscar(Knode *current, std::vector<int> dim) {
+    if(current != NULL) {
+        int n = current->nivel % dim.size();
+        if(current->dim == dim) {
+            //std::cout << current->nivel << std::endl;
+            return current;
+        }
+        else {
+            if(current->dim[n] > dim[n])
+                return buscar(current->left, dim);
+            else
+                return buscar(current->right, dim);
+        }
+    }
+    return NULL;
+}
 #endif // KDTREE_H_

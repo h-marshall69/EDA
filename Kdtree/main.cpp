@@ -27,7 +27,11 @@ int main() {
     kd->insertar(d);
     kd->insertar(e);
     kd->insertar(f);
-    cout << kd->root->right->right->right->nivel << endl;
-    cout << kd->root->right->right->right->dim[1] << endl;
+    //cout << kd->root->right->right->right->nivel << endl;
+    //cout << kd->root->right->right->right->dim[1] << endl;
+    vector<int> ab(2);
+    ab[0] = 40;
+    ab[1] = 45;
+    kd->prueba(ab);
     return 0;
 }
