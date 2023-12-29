@@ -1,37 +1,40 @@
 #include <iostream>
 #include "Kdtree.h"
 using namespace std;
+
 int main() {
-    Kdtree *kd = new Kdtree();
-    vector<int> a(2);
-    a[0] = 40;
-    a[1] = 45;
-    vector<int> b(2);
-    b[0] = 15;
-    b[1] = 70;
-    vector<int> c(2);
-    c[0] = 70;
-    c[1] = 10;
-    vector<int> d(2);
-    d[0] = 69;
-    d[1] = 50;
-    vector<int> e(2);
-    e[0] = 66;
-    e[1] = 85;
-    vector<int> f(2);
-    f[0] = 85;
-    f[1] = 90;
-    kd->insertar(a);
-    kd->insertar(b);
-    kd->insertar(c);
-    kd->insertar(d);
-    kd->insertar(e);
-    kd->insertar(f);
-    //cout << kd->root->right->right->right->nivel << endl;
-    //cout << kd->root->right->right->right->dim[1] << endl;
-    vector<int> ab(2);
-    ab[0] = 40;
-    ab[1] = 45;
-    kd->prueba(ab);
+    unique_ptr<Kdtree> kd = make_unique<Kdtree>();
+
+    vector<std::vector<int>> valores = {
+        {40, 45},
+        {15, 70},
+        {70, 10},
+        {69, 50},
+        {66, 85},
+        {85, 90}
+    };
+
+    // Insertar valores en el árbol
+    for (const auto& val : valores) {
+        kd->insertar(val);
+    }
+    
+    // Buscar un nodo
+    vector<int> nodo_a_buscar = {85, 90};
+    Knode* nodo_encontrado = kd->buscar(nodo_a_buscar);
+    if (nodo_encontrado) {
+        cout << "Nodo encontrado en el nivel: " << nodo_encontrado->nivel << endl;
+    } else {
+        cout << "Nodo no encontrado." << endl;
+    }
+    
+    // Eliminar un nodo
+    vector<int> nodo_a_eliminar = {70, 10};
+    bool eliminado = kd->eliminar(nodo_a_eliminar);
+    if (eliminado) {
+        cout << "Nodo eliminado correctamente." << endl;
+    } else {
+        cout << "Nodo no encontrado para eliminar." << endl;
+    }
     return 0;
 }
