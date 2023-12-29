@@ -28,6 +28,7 @@ public:
 
 class Kdtree {
 private:
+    // Inssertar
     void insertar(std::unique_ptr<Knode>& current, const std::vector<int>& dim, int n) {
         if (!current) {
             current = std::make_unique<Knode>(dim);
@@ -47,24 +48,22 @@ private:
 
     Knode* buscar(const std::unique_ptr<Knode>& current, const std::vector<int>& dim);
     
+    // Eliminar
     bool eliminar(std::unique_ptr<Knode>& current, const std::vector<int>& dim, int n) {
         if (!current) {
-            return false; // El nodo no existe en el árbol
+            return false; 
         } else {
             if (current->dim == dim) {
-                // Encontrado el nodo a eliminar
+                
                 if (current->right == nullptr && current->left == nullptr) {
-                    current = nullptr; // Actualizar el puntero
+                    current = nullptr;
                     return true;
                 } else {
-                    // Encontrar el sucesor inmediato
                     Knode *temp = current->right.get();
                     while (temp->left != nullptr) {
                         temp = temp->left.get();
                     }
-                    // Copiar los valores del sucesor inmediato al nodo actual
                     current->dim = temp->dim;
-                    // Eliminar el sucesor inmediato
                     eliminar(current->right, temp->dim, n + 1);
                     return true;
                 }
@@ -76,6 +75,20 @@ private:
                 }
             }
         }
+    }
+    
+    // Visualizar en preorden
+    void preorden(const std::unique_ptr<Knode>& current) {
+        if (current) {
+            for(auto it: current->dim) {
+                std::cout << it << " ";
+            }
+            std::cout << ", ";
+            
+            preorden(current->left);
+            preorden(current->right);
+        }
+        
     }
 
 public:
@@ -100,8 +113,11 @@ public:
     bool eliminar(const std::vector<int>& dim) {
         return eliminar(root, dim, 0);
     }
+    
+    void preorden() {preorden(root);}
 };
 
+// Buscar
 Knode* Kdtree::buscar(const std::unique_ptr<Knode>& current, const std::vector<int>& dim) {
     if (current) {
         int n = current->nivel % dim.size();
