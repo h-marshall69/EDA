@@ -85,7 +85,7 @@ private:
             strcpy(arr, n.second->word.c_str());
             TextOut(hdc, x, y, arr, strlen(arr));
             if(!(n.second->next.empty())) {
-                mostrar(hdc, x/root->next.size(), y + 100, n.second->next);
+                mostrar(hdc, x/root->next.size() + x, y + 100, n.second->next);
             }
             x += x;
         }

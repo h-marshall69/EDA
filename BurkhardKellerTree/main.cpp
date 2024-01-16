@@ -16,6 +16,14 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     switch(uMsg)
     {
+    case WM_PAINT: {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hwndDlg, &ps);
+        tree.mostrar(hdc, 350, 100);
+        tree.xmostrar();
+        EndPaint(hwndDlg, &ps);
+    }
+    return TRUE;
     case WM_INITDIALOG:
     {
         hwndDrawingArea = GetDlgItem(hwndDlg, AREA_DE_DIBUJO);
@@ -40,10 +48,9 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 tree.insertar(texto);
                 HDC hdc = GetDC(hwndDrawingArea);
                 //TextOut(hdc, 300, 300, texto.c_str(), texto.length());
-                tree.mostrar(hdc, 650, 150);
-                tree.xmostrar();
                 std::cout << std::endl;
                 ReleaseDC(hwndDrawingArea, hdc);
+                InvalidateRect(hwndDlg, NULL, TRUE);
             }
             return TRUE;
             case BOTONB: {

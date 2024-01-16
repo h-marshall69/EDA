@@ -42,3 +42,25 @@
 	<map>
 	<memory>
 
+1705411943 source:c:\users\sistemas\desktop\eda\burkhardkellertree\main.cpp
+	<windows.h>
+	<windowsx.h>
+	<commctrl.h>
+	<stdio.h>
+	"resource.h"
+	"BKtree.h"
+
+1705410707 c:\users\sistemas\desktop\eda\burkhardkellertree\resource.h
+
+1705412306 c:\users\sistemas\desktop\eda\burkhardkellertree\bktree.h
+	<iostream>
+	<vector>
+	<map>
+	<memory>
+
+1705410707 source:c:\users\sistemas\desktop\eda\burkhardkellertree\resource.rc
+	<windows.h>
+	<commctrl.h>
+	<richedit.h>
+	"resource.h"
+
