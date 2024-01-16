@@ -1,26 +1,19 @@
 #ifndef BKTREE_H_
 #define BKTREE_H_
 #include <iostream>
-#include <string>
 #include <vector>
-
+#include <map>
+#include <memory>
 class Nodo {
 public:
-    std::string palabra;
-    int distancia;
-    Nodo *left;
-    Nodo *right;
-
-    Nodo(std::string palabra = "", int distancia = -1) : palabra(palabra), distancia(distancia), left(nullptr), right(nullptr) {}
-    ~Nodo() {}
+    std::string word;
+    std::map<int, std::unique_ptr<Nodo>> next;
+    Nodo(std::string x = "") : word(x) {}
+    Nodo() : word("") {}
 };
-class BKTree {
+
+class BKtree {
 private:
-    Nodo *root;
-    int p_size;
-    bool rango(int distancia, int min_dis, int max_dis) {
-        return (min_dis <= distancia && distancia <= max_dis);
-    }
     int min(int a, int b, int c) {
         int min = a;
         if(b < min)
@@ -54,85 +47,79 @@ private:
         }
         return d[m][n];
     }
-    void insertar(Nodo*& node, std::string data) {
-        if (!node) {
-            node = new Nodo(data, -1);
-        } else {
-            int distancia = levenshtein_distance(node->palabra, data);
-            if(!distancia)
-                return;
-            if (distancia <= node->distancia / 2) {
-                insertar(node->left, data);
-            } else {
-                insertar(node->right, data);
+    void insertar(std::unique_ptr<Nodo>& root, std::string data) {
+        int distance = levenshtein_distance(data, root->word);
+        if(root->next.find(distance) == root->next.end()) {
+            root->next.insert(std::make_pair(distance, std::make_unique<Nodo>(data)));
+        }
+        else {
+            insertar(root->next[distance], data);
+        }
+    }
+    void similares(std::vector<std::string>& result, const std::unique_ptr<Nodo> & root, std::string data, int tolerancia) {
+        if(root) {
+            int distance = levenshtein_distance(data, root->word);
+            if(distance <= tolerancia) {
+                //std::cout << root->word << " : " << data << " " << distance << std::endl;
+                result.push_back(root->word);
+                for (const auto& r : root->next) {
+                    similares(result , r.second, data, tolerancia);
+                }
             }
         }
     }
-    void buscar(Nodo* node, std::vector<std::string>& vec, std::string data, int t, bool& palabra_encontrada) {
-        int cur_dis = levenshtein_distance(node->palabra, data);
-        int min_dis = cur_dis - t;
-        int max_dis = cur_dis + t;
+    void xmostrar(const std::map<int, std::unique_ptr<Nodo>>& next, std::string data) {
+        for(const auto& n : next) {
+            std::cout << "p:" << data << "->" << n.first << ":" << n.second->word << std::endl;
+            xmostrar(n.second->next, n.second->word);
+        }
+    }
+    void mostrar(HDC hdc, double x, double y, const std::map<int, std::unique_ptr<Nodo>>& next) {
+        for(const auto& n : next) {
+            //std::cout << n.first << " " << n.second->word << " " << x << ", " << y << std::endl;
+            char arr[n.second->word.length() + 1];
+            strcpy(arr, n.second->word.c_str());
+            TextOut(hdc, x, y, arr, strlen(arr));
+            if(!(n.second->next.empty())) {
+                mostrar(hdc, x/root->next.size(), y + 100, n.second->next);
+            }
+            x += x;
+        }
+    }
 
-        if(!cur_dis) {
-            palabra_encontrada = true;
+public:
+    std::unique_ptr<Nodo> root;
+    BKtree() : root(nullptr) {}
+    void insertar(std::string data) {
+        if(root == nullptr){
+            root = std::make_unique<Nodo>(data);
             return;
         }
-        if (cur_dis <= t)
-        vec.push_back(node->palabra);
-
-        Nodo* child = node->left;
-        if (!child) return;
-
-        while (child) {
-            if(rango(child->distancia, min_dis, max_dis))
-                buscar(child, vec, data, t, palabra_encontrada);
-            child = child->right;
-        }
-    }
-    void inorden(Nodo* node, HDC hdc, int i, int j, int nivel) {
-    if (node) {
-        // Ajusta la posición según el nivel
-        int desplazamientoX = 50 * nivel;
-        int desplazamientoY = 50 * nivel;
-
-        inorden(node->left, hdc, i - desplazamientoX, j + desplazamientoY, nivel + 1);
-
-        char arr[node->palabra.length() + 1];
-        strcpy(arr, node->palabra.c_str());
-
-        // Dibuja el nodo en la posición actual
-        TextOut(hdc, i, j, arr, strlen(arr));
-
-        inorden(node->right, hdc, i + desplazamientoX, j + desplazamientoY, nivel + 1);
-    }
-}
-public:
-
-    BKTree() : root(nullptr), p_size(0) {}
-
-    void insertar(std::string data) {
         insertar(root, data);
     }
-    void buscar(std::string data, int t) {
-        std::vector<std::string> sujerencias;
-        bool palabra_encontrada = false;
-
-        buscar(root, sujerencias, data, t, palabra_encontrada);
-        print_sujerencias(sujerencias, palabra_encontrada);
+    std::vector<std::string> similares(std::string data, int tolerancia) {
+        std::vector<std::string> result;
+        similares(result, root, data, tolerancia);
+        return result;
     }
-    void print_sujerencias(std::vector<std::string> vec, bool palabra_encontrada) {
-        if(palabra_encontrada)
-            std::cout << "Word is spelled correctly." << std::endl;
-        else if(vec.empty())
-            std::cout << "No suggestions found." << std::endl;
-        else {
-            for(const auto v: vec)
-                std::cout << v << std::endl;
+    void xmostrar() {
+        if(root) {
+            std::cout << root->word << std::endl;
+            if(!(root->next.empty())) {
+                xmostrar(root->next, root->word);
+            }
         }
     }
-    void inorden(HDC hdc, int i = 300, int j = 300) {
-        inorden(root, hdc, i, j, 1);
+    void mostrar(HDC hdc, double x, double y) {
+        if(root) {
+            //std::cout << root->word << " "<< x << ", " << y << std::endl;
+            char arr[root->word.length() + 1];
+            strcpy(arr, root->word.c_str());
+            TextOut(hdc, x, y, arr, strlen(arr));
+            if(!(root->next.empty())) {
+                mostrar(hdc, x/root->next.size(), y + 100, root->next);
+            }
+        }
     }
 };
-
-#endif
+#endif // BKTREE_H_

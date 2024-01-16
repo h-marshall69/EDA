@@ -20,10 +20,17 @@ CAPTION "Dialog"
 FONT 8, "Ms Shell Dlg"
 {
     CONTROL "", EDITA, "Edit", ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER |
-            WS_TABSTOP, 10, 10, 100, 100
-    CONTROL "Insertar", BOTON, "Button", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE |
-            WS_TABSTOP, 120, 10, 50, 25
-
+            WS_TABSTOP, 10, 10, 85, 100
+    CONTROL "Insertar", BOTONA, "Button", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE |
+            WS_TABSTOP, 105, 10, 50, 15
+    CONTROL "", TOL, "Edit", ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER |
+            WS_TABSTOP, 400, 10, 25, 15
+    CONTROL "", EDITB, "Edit", ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER |
+            WS_TABSTOP, 435, 10, 50, 15
+    CONTROL "Buscar", BOTONB, "Button", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE |
+            WS_TABSTOP, 495, 10, 50, 15
+    CONTROL "", EDITD, "Edit", ES_LEFT | WS_CHILD | WS_VISIBLE | WS_BORDER |
+            WS_TABSTOP, 555, 10, 85, 100
 }
 
 

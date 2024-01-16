@@ -20,3 +20,25 @@
 	<string>
 	<vector>
 
+1705327155 source:c:\users\marshall abadeer\desktop\dawda\eda\burkhardkellertree\resource.rc
+	<windows.h>
+	<commctrl.h>
+	<richedit.h>
+	"resource.h"
+
+1705327155 c:\users\marshall abadeer\desktop\dawda\eda\burkhardkellertree\resource.h
+
+1705366751 source:c:\users\marshall abadeer\desktop\dawda\eda\burkhardkellertree\main.cpp
+	<windows.h>
+	<windowsx.h>
+	<commctrl.h>
+	<stdio.h>
+	"resource.h"
+	"BKtree.h"
+
+1705366887 c:\users\marshall abadeer\desktop\dawda\eda\burkhardkellertree\bktree.h
+	<iostream>
+	<vector>
+	<map>
+	<memory>
+
