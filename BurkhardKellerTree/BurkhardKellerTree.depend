@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1705060109 source:c:\users\marshall abadeer\desktop\eda\burkhardkellertree\main.cpp
+1706283557 source:c:\users\marshall abadeer\desktop\eda\burkhardkellertree\main.cpp
 	<windows.h>
 	<windowsx.h>
 	<commctrl.h>
@@ -7,18 +7,19 @@
 	"resource.h"
 	"BKtree.h"
 
-1705058835 c:\users\marshall abadeer\desktop\eda\burkhardkellertree\resource.h
+1706283557 c:\users\marshall abadeer\desktop\eda\burkhardkellertree\resource.h
 
-1705057811 source:c:\users\marshall abadeer\desktop\eda\burkhardkellertree\resource.rc
+1706283557 source:c:\users\marshall abadeer\desktop\eda\burkhardkellertree\resource.rc
 	<windows.h>
 	<commctrl.h>
 	<richedit.h>
 	"resource.h"
 
-1705060481 c:\users\marshall abadeer\desktop\eda\burkhardkellertree\bktree.h
+1706283557 c:\users\marshall abadeer\desktop\eda\burkhardkellertree\bktree.h
 	<iostream>
-	<string>
 	<vector>
+	<map>
+	<memory>
 
 1705327155 source:c:\users\marshall abadeer\desktop\dawda\eda\burkhardkellertree\resource.rc
 	<windows.h>
