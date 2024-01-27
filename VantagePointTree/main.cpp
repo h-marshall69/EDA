@@ -3,9 +3,8 @@
 #include <commctrl.h>
 #include <stdio.h>
 #include "resource.h"
-#include "marshall.h"
-std::vector<P> pt;
-
+#include "Vptree.h"
+Vptree tree;
 
 HINSTANCE hInst;
 
@@ -21,31 +20,19 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN: {
         long xPos = GET_X_LPARAM(lParam);
         long yPos = GET_Y_LPARAM(lParam);
-        pt.push_back(P(xPos, yPos));
+        tree.insert(P(xPos, yPos));
         InvalidateRect(hwndDlg, NULL, TRUE);
     }
     return TRUE;
     case WM_PAINT: {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hwndDlg, &ps);
-        for(auto it: pt) {
-            Ellipse(hdc, it.x - 5, it.y - 5, it.x + 5, it.y + 5);
+        for(auto d: tree.data_set) {
+            Ellipse(hdc, d.x - 5, d.y - 5, d.x + 5, d.y + 5);
         }
-        if(pt.size() > 1) {
-            std::vector<std::pair<double, P>> sp;
-            for(int i = 0; i < pt.size(); i++) {
-                int j = 0;
-                while(j < i) {
-                    sp.push_back(std::make_pair(distancia(pt[i], pt[j]), pt[j]));
-                    j++;
-                }
-            }
-            quickSort(sp, 0, sp.size() - 1);
-            P v = sp[int(sp.size()/2)].second;
-            double c = sp[int(sp.size()/2)].first;
-
-            Arc(hdc, v.x - c, v.y - c, v.x + c, v.y + c, 0, 0, 0, 0);
-        }
+        tree.buil_tree();
+        tree.preorden();
+        tree.xpreorden(hdc);
         EndPaint(hwndDlg, &ps);
     }
     return TRUE;
@@ -59,31 +46,6 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch(LOWORD(wParam))
         {
-            case BOTONA: {
-
-                /*PAINTSTRUCT ps;
-                HDC hdc = BeginPaint(hwndDlg, &ps);
-                for(int i = 0; i < pt.size(); i++) {
-                    int j = 0;
-                    while(j < i) {
-                        sp.push_back(std::make_pair(distancia(pt[i], pt[j]), pt[j]));
-                        j++;
-                    }
-                }
-                quickSort(sp, 0, sp.size() - 1);
-                for(auto i : sp) {
-                    std::cout << i.first << " ";
-                }
-                std::cout << std::endl;
-                P v = sp[int(sp.size()/2)].second;
-                double c = sp[int(sp.size()/2)].first;
-                //std::cout << c << std::endl;
-
-                Arc(hdc, v.x - 10, v.y - 10, v.x + 10, v.y + 10, 0, 0, 0, 0);
-
-                InvalidateRect(hwndDlg, NULL, TRUE);*/
-            }
-            return TRUE;
         }
     }
     return TRUE;

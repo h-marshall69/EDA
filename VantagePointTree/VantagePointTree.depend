@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1706286202 source:c:\users\marshall abadeer\desktop\eda\vantagepointtree\resource.rc
+1706397771 source:c:\users\marshall abadeer\desktop\eda\vantagepointtree\resource.rc
 	<windows.h>
 	<commctrl.h>
 	<richedit.h>
@@ -7,13 +7,13 @@
 
 1706286388 c:\users\marshall abadeer\desktop\eda\vantagepointtree\resource.h
 
-1706287842 source:c:\users\marshall abadeer\desktop\eda\vantagepointtree\main.cpp
+1706398454 source:c:\users\marshall abadeer\desktop\eda\vantagepointtree\main.cpp
 	<windows.h>
 	<windowsx.h>
 	<commctrl.h>
 	<stdio.h>
 	"resource.h"
-	"marshall.h"
+	"Vptree.h"
 
 1706283921 c:\users\marshall abadeer\desktop\eda\vantagepointtree\marshall.h
 	<iostream>
@@ -21,4 +21,10 @@
 	<algorithm>
 	<utility>
 	<math.h>
+
+1706398454 c:\users\marshall abadeer\desktop\eda\vantagepointtree\vptree.h
+	<iostream>
+	<memory>
+	<math.h>
+	<vector>
 
