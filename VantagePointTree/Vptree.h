@@ -13,6 +13,9 @@ public:
     bool operator!=(const P& other) const {
         return x != other.x || y != other.y;
     }
+    bool operator==(const P& other) const {
+        return x == other.x && y == other.y;
+    }
 };
 
 double distancia(const P& a, const P& b) {
@@ -99,15 +102,46 @@ private:
             preorden(root->ouside, 'o');
         }
     }
-    void xpreorden(HDC hdc, std::unique_ptr<Node>& root) {
+    void xpreorden(HDC hdc, std::unique_ptr<Node>& root, int x,int y,int xa,int ya,int a) {
         if(root) {
+            char Cad[20];
+            itoa(root->vp.x, Cad, 10);
+            int len = strlen(Cad);
+            TextOut(hdc, x - 30, y, Cad, len);
+
+            char Cad1[20];
+            itoa(root->vp.y, Cad1, 10);
+            int len1 = strlen(Cad1);
+            TextOut(hdc, x + 5, y, Cad1, len1);
+
             Arc(hdc, root->vp.x - root->r, root->vp.y - root->r, root->vp.x + root->r, root->vp.y + root->r, 0, 0, 0, 0);
-            //Ellipse(hdc, root->vp.x - root->r, root->vp.y - root->r, root->vp.x + root->r, root->vp.y + root->r);
-            xpreorden(hdc, root->inside);
-            //Ellipse(hdc, root->vp.x - root->r, root->vp.y - root->r, root->vp.x + root->r, root->vp.y + root->r);
-            xpreorden(hdc, root->ouside);
-            //Ellipse(hdc, root->vp.x - root->r, root->vp.y - root->r, root->vp.x + root->r, root->vp.y + root->r);
-            //Arc(hdc, root->vp.x - root->r, root->vp.y - root->r, root->vp.x + root->r, root->vp.y + root->r, 0, 0, 0, 0);
+
+            xpreorden(hdc, root->inside, x - a/2, y + 40, x, y, a/2);
+
+            xpreorden(hdc, root->ouside, x+a/2, y+40, x, y, a/2);
+
+            MoveToEx(hdc, xa, ya, NULL);
+            LineTo(hdc, x, y);
+        }
+    }
+    /*void eliminar(std::unique_ptr<Node>& root, std::vector<P>& d_t, P p) {
+        if(root) {
+            int dis = distancia(root->vp, p);
+            if (d <= root->vp)
+                insertar(root->inside, p);
+            else
+                insertar(root->der, p, radio);
+        }
+    }*/
+    void eliminar(std::vector<P>& d_t, P p) {
+        if(!d_t.empty()) {
+            for (auto it = d_t.begin(); it != d_t.end(); ++it) {
+
+                if (*it == p) {
+                    d_t.erase(it);
+                    break;
+                }
+            }
         }
     }
 
@@ -127,22 +161,10 @@ public:
 
     }
     void preorden() {preorden(root, 'r');}
-    void xpreorden(HDC hdc) {xpreorden(hdc, root);}
+    void xpreorden(HDC hdc, int x, int y, int xa, int ya, int a) {
+        xpreorden(hdc, root, x, y, xa, ya, a);
+    }
+    void eliminar(P p) {eliminar(data_set, p);}
 };
-
-/*int main() {
-    Vptree tree;
-    tree.insert(P(603, 846));
-    tree.insert(P(654, 812));
-    tree.insert(P(543, 436));
-    tree.insert(P(756, 886));
-    tree.insert(P(434, 845));
-    cout<<endl;
-
-    tree.buil_tree();
-    tree.preorden();
-
-    return 0;
-}*/
 
 #endif // VPTREE_H_

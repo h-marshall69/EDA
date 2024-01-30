@@ -29,10 +29,19 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         HDC hdc = BeginPaint(hwndDlg, &ps);
         for(auto d: tree.data_set) {
             Ellipse(hdc, d.x - 5, d.y - 5, d.x + 5, d.y + 5);
+            char Cad[20];
+            itoa(d.x, Cad, 10);
+            int len = strlen(Cad);
+            TextOut(hdc, d.x - 30, d.y + 10, Cad, len);
+
+            char Cad1[20];
+            itoa(d.y, Cad1, 10);
+            int len1 = strlen(Cad1);
+            TextOut(hdc, d.x + 5, d.y + 10, Cad1, len1);
         }
         tree.buil_tree();
         tree.preorden();
-        tree.xpreorden(hdc);
+        tree.xpreorden(hdc,730,70,730,70,100);
         EndPaint(hwndDlg, &ps);
     }
     return TRUE;
@@ -46,6 +55,14 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         switch(LOWORD(wParam))
         {
+            case BOTONA: {
+                int x = GetDlgItemInt(hwndDlg, EDITX, nullptr, TRUE);
+                int y = GetDlgItemInt(hwndDlg, EDITY, nullptr, TRUE);
+                tree.eliminar(P(x, y));
+                tree.buil_tree();
+                InvalidateRect(hwndDlg, NULL, TRUE);
+            }
+            return TRUE;
         }
     }
     return TRUE;
